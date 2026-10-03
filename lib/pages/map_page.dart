@@ -105,9 +105,15 @@ class _MapPageState extends State<MapPage> {
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                     const SizedBox(height: 4),
-                    SelectableText(
-                      curiosity.url,
-                      style: Theme.of(context).textTheme.bodySmall,
+                    TextButton.icon(
+                      onPressed: () async {
+                        await launchUrl(
+                          Uri.parse(curiosity.url),
+                          mode: LaunchMode.externalApplication,
+                        );
+                      },
+                      icon: const Icon(Icons.open_in_new),
+                      label: const Text('Open on Wikipedia'),
                     ),
                   ],
                 ),
