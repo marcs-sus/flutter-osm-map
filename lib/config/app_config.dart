@@ -19,11 +19,4 @@ class AppConfig {
   static const mapInitialLatitude = 0.0;
   static const mapInitialLongitude = 0.0;
   static const mapInitialZoom = 2.0;
-  static const mapTileDimension = 256.0;
-  static const mapMinimumZoom = 0.0;
-
-  static const mapMinimumLatitude = -85.05112878;
-  static const mapMaximumLatitude = 85.05112878;
-  static const mapMinimumLongitude = -180.0;
-  static const mapMaximumLongitude = 180.0;
 }
