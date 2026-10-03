@@ -4,29 +4,35 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
+import '../config/app_config.dart';
+
 class WikipediaService {
   static Future<WikipediaCuriosity?> findRandomNearby(LatLng location) async {
-    final uri = Uri.https('en.wikipedia.org', '/w/api.php', {
-      'action': 'query',
-      'generator': 'geosearch',
-      'ggscoord': '${location.latitude}|${location.longitude}',
-      'ggsradius': '10000',
-      'ggslimit': '10',
-      'prop': 'extracts|info|pageimages',
-      'inprop': 'url',
-      'exintro': '1',
-      'explaintext': '1',
-      'exchars': '500',
-      'piprop': 'thumbnail|name',
-      'pithumbsize': '500',
-      'pilicense': 'free',
-      'format': 'json',
-      'origin': '*',
-    });
+    final uri = Uri.https(
+      AppConfig.wikipediaApiHost,
+      AppConfig.wikipediaApiPath,
+      {
+        'action': 'query',
+        'generator': 'geosearch',
+        'ggscoord': '${location.latitude}|${location.longitude}',
+        'ggsradius': AppConfig.wikipediaSearchRadius.toString(),
+        'ggslimit': AppConfig.wikipediaSearchLimit.toString(),
+        'prop': 'extracts|info|pageimages',
+        'inprop': 'url',
+        'exintro': '1',
+        'explaintext': '1',
+        'exchars': AppConfig.wikipediaExtractCharacters.toString(),
+        'piprop': 'thumbnail|name',
+        'pithumbsize': AppConfig.wikipediaThumbnailSize.toString(),
+        'pilicense': 'free',
+        'format': 'json',
+        'origin': '*',
+      },
+    );
 
     final response = await http.get(
       uri,
-      headers: {'Api-User-Agent': 'OpenStreetMap Explorer/1.0'},
+      headers: {'Api-User-Agent': AppConfig.wikipediaApiUserAgent},
     );
 
     if (response.statusCode != 200) {

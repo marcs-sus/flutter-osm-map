@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../config/app_config.dart';
 import '../services/wikipedia_service.dart';
 
 class Epsg3857NoRepeat extends Epsg3857 {
@@ -19,8 +20,11 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  static const LatLng _initialCenter = LatLng(0, 0);
-  static const double _initialZoom = 2;
+  static const LatLng _initialCenter = LatLng(
+    AppConfig.mapInitialLatitude,
+    AppConfig.mapInitialLongitude,
+  );
+  static const double _initialZoom = AppConfig.mapInitialZoom;
 
   LatLng? _selectedLocation;
   bool _isLoading = false;
@@ -144,8 +148,8 @@ class _MapPageState extends State<MapPage> {
         ),
         children: [
           TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'com.example.osm_map',
+            urlTemplate: AppConfig.osmTileUrl,
+            userAgentPackageName: AppConfig.osmUserAgentPackageName,
           ),
           if (_selectedLocation != null)
             MarkerLayer(
