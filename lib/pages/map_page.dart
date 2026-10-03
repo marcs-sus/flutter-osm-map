@@ -71,6 +71,20 @@ class _MapPageState extends State<MapPage> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    if (curiosity.imageUrl != null)
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          curiosity.imageUrl!,
+                          width: double.infinity,
+                          height: 220,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox.shrink();
+                          },
+                        ),
+                      ),
+                    if (curiosity.imageUrl != null) const SizedBox(height: 16),
                     Text(
                       curiosity.title,
                       style: Theme.of(context).textTheme.headlineSmall,

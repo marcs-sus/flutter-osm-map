@@ -12,11 +12,14 @@ class WikipediaService {
       'ggscoord': '${location.latitude}|${location.longitude}',
       'ggsradius': '10000',
       'ggslimit': '10',
-      'prop': 'extracts|info',
+      'prop': 'extracts|info|pageimages',
       'inprop': 'url',
       'exintro': '1',
       'explaintext': '1',
       'exchars': '500',
+      'piprop': 'thumbnail|name',
+      'pithumbsize': '500',
+      'pilicense': 'free',
       'format': 'json',
       'origin': '*',
     });
@@ -55,12 +58,31 @@ class WikipediaService {
       return null;
     }
 
-    final page = candidates[Random().nextInt(candidates.length)];
+    final candidatesWithImages = candidates.where((page) {
+      final thumbnail = page['thumbnail'];
+
+      if (thumbnail is! Map<String, dynamic>) {
+        return false;
+      }
+
+      final source = thumbnail['source'];
+
+      return source is String && source.isNotEmpty;
+    }).toList();
+
+    final pool = candidatesWithImages.isNotEmpty
+        ? candidatesWithImages
+        : candidates;
+
+    final page = pool[Random().nextInt(pool.length)];
+
+    final thumbnail = page['thumbnail'] as Map<String, dynamic>?;
 
     return WikipediaCuriosity(
       title: page['title'] as String,
       extract: page['extract'] as String,
       url: (page['fullurl'] as String?) ?? 'https://en.wikipedia.org/',
+      imageUrl: thumbnail?['source'] as String?,
     );
   }
 }
@@ -70,9 +92,11 @@ class WikipediaCuriosity {
     required this.title,
     required this.extract,
     required this.url,
+    this.imageUrl,
   });
 
   final String title;
   final String extract;
   final String url;
+  final String? imageUrl;
 }
