@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../config/app_config.dart';
 import '../services/wikipedia_service.dart';
@@ -165,7 +166,15 @@ class _MapPageState extends State<MapPage> {
           RichAttributionWidget(
             alignment: AttributionAlignment.bottomLeft,
             attributions: [
-              TextSourceAttribution('OpenStreetMap contributors', onTap: () {}),
+              TextSourceAttribution(
+                'OpenStreetMap contributors',
+                onTap: () async {
+                  await launchUrl(
+                    Uri.parse(AppConfig.osmCopyrightUrl),
+                    mode: LaunchMode.externalApplication,
+                  );
+                },
+              ),
             ],
           ),
         ],
