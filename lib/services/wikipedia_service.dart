@@ -8,6 +8,7 @@ import '../config/app_config.dart';
 
 class WikipediaService {
   static Future<WikipediaCuriosity?> findRandomNearby(LatLng location) async {
+    // Configure request to Wikipedia Geosearch API
     final uri = Uri.https(
       AppConfig.wikipediaApiHost,
       AppConfig.wikipediaApiPath,
@@ -39,6 +40,7 @@ class WikipediaService {
       throw Exception('Wikipedia request failed.');
     }
 
+    // Decode the JSON response and extract the relevant information
     final data = jsonDecode(response.body) as Map<String, dynamic>;
     final query = data['query'] as Map<String, dynamic>?;
 
@@ -82,13 +84,16 @@ class WikipediaService {
 
     final page = pool[Random().nextInt(pool.length)];
 
-    final thumbnail = page['thumbnail'] as Map<String, dynamic>?;
+    final thumbnail = page['thumbnail'];
+    final imageSource = thumbnail is Map<String, dynamic>
+        ? thumbnail['source']
+        : null;
 
     return WikipediaCuriosity(
       title: page['title'] as String,
       extract: page['extract'] as String,
       url: (page['fullurl'] as String?) ?? 'https://en.wikipedia.org/',
-      imageUrl: thumbnail?['source'] as String?,
+      imageUrl: imageSource is String ? imageSource : null,
     );
   }
 }

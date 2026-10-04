@@ -9,6 +9,7 @@ import '../services/wikipedia_service.dart';
 class Epsg3857NoRepeat extends Epsg3857 {
   const Epsg3857NoRepeat();
 
+  // Disables map horizontal repeating
   @override
   bool get replicatesWorldLongitude => false;
 }
@@ -30,12 +31,14 @@ class _MapPageState extends State<MapPage> {
   LatLng? _selectedLocation;
   bool _isLoading = false;
 
+  // Selects a location on the map and returns its coordinates
   void _onMapTap(TapPosition tapPosition, LatLng point) {
     setState(() {
       _selectedLocation = point;
     });
   }
 
+  // 'Discover' button that searches nearby Wikipedia articles
   Future<void> _discover() async {
     final location = _selectedLocation;
 

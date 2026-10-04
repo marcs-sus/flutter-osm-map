@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Change these values to customize the app's appearance and behavior
 class AppConfig {
   static const appTitle = 'OpenStreetMap Explorer';
   static const appColorScheme = Colors.green;
