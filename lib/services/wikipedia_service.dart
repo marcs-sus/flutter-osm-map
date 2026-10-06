@@ -92,7 +92,7 @@ class WikipediaService {
     return WikipediaCuriosity(
       title: page['title'] as String,
       extract: page['extract'] as String,
-      url: (page['fullurl'] as String?) ?? 'https://en.wikipedia.org/',
+      url: (page['fullurl'] as String?) ?? AppConfig.wikipediaApiHost,
       imageUrl: imageSource is String ? imageSource : null,
     );
   }
